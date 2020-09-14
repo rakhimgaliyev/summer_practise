@@ -2,7 +2,7 @@
 
 ### Installation
 
-Dillinger requires [python 3](https://nodejs.org/) to run.
+Project requires [python 3](https://nodejs.org/) to run.
 
 Install the dependencies
 
