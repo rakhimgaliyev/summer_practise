@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import math
 import random
 import matplotlib.pyplot as plt
@@ -24,12 +26,22 @@ if __name__ == "__main__":
     # Initialization
     min_x = -55
     max_x = 55
-    solution = [min_x + (max_x - min_x) * random.random() for i in range(0, pop_size)]
+    solution = [min_x + (max_x - min_x) * random.random()
+                for i in range(0, pop_size)]
     gen_no = 0
 
     config = Config()
 
+    springs = []
     for delta_sp in array_of_delta_sp:
         for i_p_sp in array_of_i_p_sp:
             spring = Spring(config, delta_sp, i_p_sp)
-            print_smt(spring)
+            if spring.is_spring_ok():
+                springs.append(spring)
+
+    function1 = [i.n_tau for i in springs]
+    function2 = [j.L_szhat for j in springs]
+    plt.xlabel('n_tau', fontsize=15)
+    plt.ylabel('L_szhat', fontsize=15)
+    plt.scatter(function1, function2)
+    plt.show()

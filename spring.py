@@ -4,6 +4,8 @@ import random
 
 class Spring:
     def __init__(self, config, delta_sp, i_p_sp):
+        self.config = config
+
         self.h_sp = config.h_sp
         self.k_sp = config.k_sp
         self.G_sp = config.G_sp
@@ -32,6 +34,12 @@ class Spring:
 
         # Высота пружины в сжатом состоянии
         self.L_szhat = self.L_sv_sp - self.f_sp
+
+        # Наибольшее напряжение кручения
+        self.t_max = self._get_t_max()
+
+        # Коэффициент запаса
+        self.n_tau = self._get_n_tau()
 
     # Возвращает число рабочих витков пружины (8.55)
     def _get_d_sr_sp(self):
@@ -63,7 +71,22 @@ class Spring:
     # t_max - Наибольшее напряжение кручения
     def _get_t_max(self):
         hi = 1 + 1.45 / self.c_sp
-        return 8 * hi * self.d_sr_sp * self.P_p / (math.pi * (self.delta_sp ** 3))
+        return 8 * hi * self.d_sr_sp * self.P_p / (math.pi * self.delta_sp ** 3)
+
+    # n_tau - коэффициент запаса
+    def _get_n_tau(self):
+        k_tau_sp = self.config.k_tau_sp
+        e_p_tau_sp = self.config.e_p_tau_sp
+
+        _lambda = 0.02*10**(-3)
+        e_m_tau_sp = 0.5 + (1-0.5)*math.exp(-_lambda * self.delta_sp)
+
+        return self.config.t_1_sp / (k_tau_sp/e_m_tau_sp/e_p_tau_sp * self.t_max)
+
+    def is_spring_ok(self):
+        if self._is_resonance_possible() or self.n_tau < 1.2:
+            return False
+        return True
 
     # Возвращает true, если возможен резонанс (8.59)
     def _is_resonance_possible(self):
@@ -79,7 +102,7 @@ class Spring:
             "Spring:\n\tP_p0 = {P_p0} H\n\tP_p = {P_p} H\n\tk_sp = {k_sp} H/m\n\t"
             "G_sp = {G_sp} Pa\n\tn_p = {n_p} rpm\n\td_sr = {d_sr_sp} mm\n\ti_p = {i_p_sp}"
             "\n\tdelta = {delta_sp} mm\n\tf_sp = {f_sp} mm\n\th_sp = {h_sp} mm\n\tro = {ro_sp} kg/m^3"
-            "\n\tn_c_sp = {n_c_sp} rpm\n\tL_szhat = {L_szhat} mm".format(
+            "\n\tn_c_sp = {n_c_sp} rpm\n\tL_szhat = {L_szhat}\n\tn_tau = {n_tau} mm".format(
                 P_p0=self.P_p0,
                 P_p=self.P_p,
                 k_sp=self.k_sp,
@@ -93,5 +116,6 @@ class Spring:
                 ro_sp=self.ro_sp,
                 n_c_sp=self.n_c_sp * 60,
                 L_szhat=self.L_szhat * 10 ** 3,
+                n_tau=self.n_tau,
             )
         )
