@@ -37,6 +37,7 @@ if __name__ == "__main__":
         for i_p_sp in array_of_i_p_sp:
             spring = Spring(config, delta_sp, i_p_sp)
             if spring.is_spring_ok():
+                print(spring)
                 springs.append(spring)
 
     function1 = [i.n_tau for i in springs]

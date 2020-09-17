@@ -78,7 +78,7 @@ class Spring:
         k_tau_sp = self.config.k_tau_sp
         e_p_tau_sp = self.config.e_p_tau_sp
 
-        _lambda = 0.02*10**(-3)
+        _lambda = 0.02E-3
         e_m_tau_sp = 0.5 + (1-0.5)*math.exp(-_lambda * self.delta_sp)
 
         return self.config.t_1_sp / (k_tau_sp/e_m_tau_sp/e_p_tau_sp * self.t_max)
@@ -108,14 +108,14 @@ class Spring:
                 k_sp=self.k_sp,
                 G_sp=self.G_sp,
                 n_p=self.n_p * 60,
-                d_sr_sp=self.d_sr_sp * 10 ** 3,
+                d_sr_sp=self.d_sr_sp * 1E3,
                 i_p_sp=self.i_p_sp,
-                delta_sp=self.delta_sp * 10 ** 3,
-                f_sp=self.f_sp * 10 ** 3,
-                h_sp=self.h_sp * 10 ** 3,
+                delta_sp=self.delta_sp * 1E3,
+                f_sp=self.f_sp * 1E3,
+                h_sp=self.h_sp * 1E3,
                 ro_sp=self.ro_sp,
                 n_c_sp=self.n_c_sp * 60,
-                L_szhat=self.L_szhat * 10 ** 3,
+                L_szhat=self.L_szhat * 1E3,
                 n_tau=self.n_tau,
             )
         )
