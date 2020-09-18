@@ -59,7 +59,7 @@ if __name__ == "__main__":
     function1 = [i.n_tau for i in springs]
     function2 = [j.L_szhat for j in springs]
     plt.xlabel('n_tau', fontsize=15)
-    plt.ylabel('L_szhat', fontsize=15)
+    plt.ylabel('L_szhat', fontsize=15)      
     # plt.gca().invert_yaxis()
     plt.scatter(function1, function2)
     plt.show()
