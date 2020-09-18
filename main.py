@@ -37,12 +37,29 @@ if __name__ == "__main__":
         for i_p_sp in array_of_i_p_sp:
             spring = Spring(config, delta_sp, i_p_sp)
             if spring.is_spring_ok():
-                print(spring)
                 springs.append(spring)
+
+    front = []
+    if len(springs) > 0:
+        front.append(springs[0])
+
+    # generate Pareto-front
+    for spring in springs:
+        for front_elem in front:
+            if spring.dominates_by_pareto(front_elem):
+                front = [spring]
+            elif not front_elem.dominates_by_pareto(spring) \
+                    and not spring.on_array(front):
+                front.append(spring)
+
+    for spring in front:
+        print(spring)
+    print(len(front))
 
     function1 = [i.n_tau for i in springs]
     function2 = [j.L_szhat for j in springs]
     plt.xlabel('n_tau', fontsize=15)
     plt.ylabel('L_szhat', fontsize=15)
+    # plt.gca().invert_yaxis()
     plt.scatter(function1, function2)
     plt.show()

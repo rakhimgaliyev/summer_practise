@@ -97,6 +97,27 @@ class Spring:
             return True
         return False
 
+    def dominates_by_pareto(self, other):
+        if self.L_szhat < other.L_szhat and self.n_tau > other.n_tau \
+                or self.L_szhat <= other.L_szhat and self.n_tau > other.n_tau \
+                or self.L_szhat < other.L_szhat and self.n_tau >= other.n_tau:
+            return True
+        return False
+
+    def _equals(self, other):
+        if self.d_sr_sp == other.d_sr_sp \
+                and self.delta_sp == other.delta_sp \
+                and self.i_p_sp == other.i_p_sp:
+            return True
+        return False
+
+    def on_array(self, springs):
+        for s in springs:
+            if self._equals(s):
+                return True
+        return False
+
+
     def __str__(self):
         return (
             "Spring:\n\tP_p0 = {P_p0} H\n\tP_p = {P_p} H\n\tk_sp = {k_sp} H/m\n\t"
