@@ -71,8 +71,8 @@ if __name__ == "__main__":
         if not_dominating and not spring.on_array(front):
             front.append(spring)
 
-    # for spring in front:
-    #     print(spring)
+    for spring in front:
+        print(spring)
 
     print("ALL SPRINGS ARR LEN: ", len(springs))
     print("FRONT SPRINGS ARR LEN: ", len(front))
