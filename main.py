@@ -17,6 +17,20 @@ def print_smt(value, description="DATA"):
     print()
 
 
+def show_plot(all_springs, front):
+    plt.xlabel("n_tau", fontsize=15)
+    plt.ylabel("L_szhat", fontsize=15)
+
+    all_springs_x = [i.n_tau for i in all_springs]
+    all_springs_y = [j.L_szhat for j in all_springs]
+    plt.scatter(all_springs_x, all_springs_y)
+
+    front_springs_x = [i.n_tau for i in front]
+    front_springs_y = [j.L_szhat for j in front]
+    plt.scatter(front_springs_x, front_springs_y, c="r")
+    plt.show()
+
+
 if __name__ == "__main__":
     # Main program starts here
     pop_size = 20
@@ -26,8 +40,7 @@ if __name__ == "__main__":
     # Initialization
     min_x = -55
     max_x = 55
-    solution = [min_x + (max_x - min_x) * random.random()
-                for i in range(0, pop_size)]
+    solution = [min_x + (max_x - min_x) * random.random() for i in range(0, pop_size)]
     gen_no = 0
 
     config = Config()
@@ -40,26 +53,31 @@ if __name__ == "__main__":
                 springs.append(spring)
 
     front = []
-    if len(springs) > 0:
-        front.append(springs[0])
+    if len(springs) == 0:
+        print("SPRING DO NOT FIT LIMITS")
+        exit(0)
 
     # generate Pareto-front
     for spring in springs:
+        not_dominating = True
         for front_elem in front:
             if spring.dominates_by_pareto(front_elem):
-                front = [spring]
-            elif not front_elem.dominates_by_pareto(spring) \
-                    and not spring.on_array(front):
-                front.append(spring)
+                print(front.index(front_elem))
+                print(len(front))
+                front = [x for x in front if not x.equals(front_elem)]
+                print(len(front))
+            if front_elem.dominates_by_pareto(spring):
+                not_dominating = False
+        if not_dominating and not spring.on_array(front):
+            front.append(spring)
 
-    for spring in front:
-        print(spring)
-    print(len(front))
+    # for spring in front:
+    #     print(spring)
 
-    function1 = [i.n_tau for i in springs]
-    function2 = [j.L_szhat for j in springs]
-    plt.xlabel('n_tau', fontsize=15)
-    plt.ylabel('L_szhat', fontsize=15)      
-    # plt.gca().invert_yaxis()
-    plt.scatter(function1, function2)
-    plt.show()
+    print("ALL SPRINGS ARR LEN: ", len(springs))
+    print("FRONT SPRINGS ARR LEN: ", len(front))
+
+    show_plot(springs, front)
+
+    print(front[0])
+    print(springs[0])

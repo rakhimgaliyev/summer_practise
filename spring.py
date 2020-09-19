@@ -78,10 +78,10 @@ class Spring:
         k_tau_sp = self.config.k_tau_sp
         e_p_tau_sp = self.config.e_p_tau_sp
 
-        _lambda = 0.02E-3
-        e_m_tau_sp = 0.5 + (1-0.5)*math.exp(-_lambda * self.delta_sp)
+        _lambda = 0.02e-3
+        e_m_tau_sp = 0.5 + (1 - 0.5) * math.exp(-_lambda * self.delta_sp)
 
-        return self.config.t_1_sp / (k_tau_sp/e_m_tau_sp/e_p_tau_sp * self.t_max)
+        return self.config.t_1_sp / (k_tau_sp / e_m_tau_sp / e_p_tau_sp * self.t_max)
 
     def is_spring_ok(self):
         if self._is_resonance_possible() or self.n_tau < 1.2:
@@ -98,25 +98,24 @@ class Spring:
         return False
 
     def dominates_by_pareto(self, other):
-        if self.L_szhat < other.L_szhat and self.n_tau > other.n_tau \
-                or self.L_szhat <= other.L_szhat and self.n_tau > other.n_tau \
-                or self.L_szhat < other.L_szhat and self.n_tau >= other.n_tau:
+        if self.L_szhat < other.L_szhat and self.n_tau > other.n_tau:
             return True
         return False
 
-    def _equals(self, other):
-        if self.d_sr_sp == other.d_sr_sp \
-                and self.delta_sp == other.delta_sp \
-                and self.i_p_sp == other.i_p_sp:
+    def equals(self, other):
+        if (
+            self.d_sr_sp == other.d_sr_sp
+            and self.delta_sp == other.delta_sp
+            and self.i_p_sp == other.i_p_sp
+        ):
             return True
         return False
 
     def on_array(self, springs):
         for s in springs:
-            if self._equals(s):
+            if self.equals(s):
                 return True
         return False
-
 
     def __str__(self):
         return (
@@ -129,14 +128,14 @@ class Spring:
                 k_sp=self.k_sp,
                 G_sp=self.G_sp,
                 n_p=self.n_p * 60,
-                d_sr_sp=self.d_sr_sp * 1E3,
+                d_sr_sp=self.d_sr_sp * 1e3,
                 i_p_sp=self.i_p_sp,
-                delta_sp=self.delta_sp * 1E3,
-                f_sp=self.f_sp * 1E3,
-                h_sp=self.h_sp * 1E3,
+                delta_sp=self.delta_sp * 1e3,
+                f_sp=self.f_sp * 1e3,
+                h_sp=self.h_sp * 1e3,
                 ro_sp=self.ro_sp,
                 n_c_sp=self.n_c_sp * 60,
-                L_szhat=self.L_szhat * 1E3,
+                L_szhat=self.L_szhat * 1e3,
                 n_tau=self.n_tau,
             )
         )
