@@ -17,18 +17,21 @@ def print_smt(value, description="DATA"):
     print()
 
 
-def show_plot(all_springs, front):
+def show_n_tau_from_smth(all_springs, front, attr="L_szhat"):
     plt.xlabel("n_tau", fontsize=15)
-    plt.ylabel("L_szhat", fontsize=15)
+    plt.ylabel(attr, fontsize=15)
 
     all_springs_x = [i.n_tau for i in all_springs]
-    all_springs_y = [j.L_szhat for j in all_springs]
+    all_springs_y = [getattr(j, attr) for j in all_springs]
     plt.scatter(all_springs_x, all_springs_y)
 
     front_springs_x = [i.n_tau for i in front]
-    front_springs_y = [j.L_szhat for j in front]
+    front_springs_y = [getattr(j, attr) for j in front]
     plt.scatter(front_springs_x, front_springs_y, c="r")
-    plt.show()
+
+
+def show_front(all_springs, front):
+    show_n_tau_from_smth(all_springs, front, attr="L_szhat")
 
 
 if __name__ == "__main__":
@@ -77,7 +80,11 @@ if __name__ == "__main__":
     print("ALL SPRINGS ARR LEN: ", len(springs))
     print("FRONT SPRINGS ARR LEN: ", len(front))
 
-    show_plot(springs, front)
-
-    print(front[0])
-    print(springs[0])
+    show_front(springs, front)
+    plt.figure()
+    show_n_tau_from_smth(springs, front, "delta_sp")
+    plt.figure()
+    show_n_tau_from_smth(springs, front, "d_sr_sp")
+    plt.figure()
+    show_n_tau_from_smth(springs, front, "i_p_sp")
+    plt.show()
